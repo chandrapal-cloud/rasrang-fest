@@ -14,16 +14,309 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bikes: {
+        Row: {
+          battery_health: number
+          battery_percent: number
+          created_at: string
+          gps_lat: number | null
+          gps_lng: number | null
+          id: string
+          last_serviced_at: string | null
+          model: string
+          odometer_km: number
+          owner_id: string
+          plate_number: string | null
+          range_km: number
+          status: string
+        }
+        Insert: {
+          battery_health?: number
+          battery_percent?: number
+          created_at?: string
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: string
+          last_serviced_at?: string | null
+          model?: string
+          odometer_km?: number
+          owner_id: string
+          plate_number?: string | null
+          range_km?: number
+          status?: string
+        }
+        Update: {
+          battery_health?: number
+          battery_percent?: number
+          created_at?: string
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: string
+          last_serviced_at?: string | null
+          model?: string
+          odometer_km?: number
+          owner_id?: string
+          plate_number?: string | null
+          range_km?: number
+          status?: string
+        }
+        Relationships: []
+      }
+      bookings: {
+        Row: {
+          bike_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          scheduled_at: string
+          service_type: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          bike_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          scheduled_at: string
+          service_type: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          bike_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          scheduled_at?: string
+          service_type?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_bike_id_fkey"
+            columns: ["bike_id"]
+            isOneToOne: false
+            referencedRelation: "bikes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deliveries: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          customer_name: string
+          distance_km: number
+          drop_address: string
+          id: string
+          payout: number
+          pickup_address: string
+          rider_id: string
+          status: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          customer_name: string
+          distance_km?: number
+          drop_address: string
+          id?: string
+          payout?: number
+          pickup_address: string
+          rider_id: string
+          status?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          customer_name?: string
+          distance_km?: number
+          drop_address?: string
+          id?: string
+          payout?: number
+          pickup_address?: string
+          rider_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      earnings: {
+        Row: {
+          date: string
+          deliveries_count: number
+          id: string
+          rider_id: string
+          total: number
+        }
+        Insert: {
+          date?: string
+          deliveries_count?: number
+          id?: string
+          rider_id: string
+          total?: number
+        }
+        Update: {
+          date?: string
+          deliveries_count?: number
+          id?: string
+          rider_id?: string
+          total?: number
+        }
+        Relationships: []
+      }
+      maintenance_records: {
+        Row: {
+          bike_id: string | null
+          cost: number
+          id: string
+          mechanic: string | null
+          performed_at: string
+          service_type: string
+          user_id: string
+        }
+        Insert: {
+          bike_id?: string | null
+          cost?: number
+          id?: string
+          mechanic?: string | null
+          performed_at?: string
+          service_type: string
+          user_id: string
+        }
+        Update: {
+          bike_id?: string | null
+          cost?: number
+          id?: string
+          mechanic?: string | null
+          performed_at?: string
+          service_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maintenance_records_bike_id_fkey"
+            columns: ["bike_id"]
+            isOneToOne: false
+            referencedRelation: "bikes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          active_role: Database["public"]["Enums"]["app_role"]
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          onboarding_complete: boolean
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          active_role?: Database["public"]["Enums"]["app_role"]
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          onboarding_complete?: boolean
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active_role?: Database["public"]["Enums"]["app_role"]
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          onboarding_complete?: boolean
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          bike_id: string | null
+          created_at: string
+          end_date: string | null
+          id: string
+          monthly_fee: number
+          plan_name: string
+          start_date: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          bike_id?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          monthly_fee: number
+          plan_name: string
+          start_date: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          bike_id?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          monthly_fee?: number
+          plan_name?: string
+          start_date?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_bike_id_fkey"
+            columns: ["bike_id"]
+            isOneToOne: false
+            referencedRelation: "bikes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "rider" | "subscriber"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +443,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "rider", "subscriber"],
+    },
   },
 } as const
