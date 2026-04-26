@@ -68,9 +68,9 @@ const Onboarding = () => {
 
   return (
     <PhoneShell>
-      <div className="relative flex flex-col h-full min-h-screen md:min-h-[820px] bg-background">
+      <div className="relative flex flex-col min-h-screen md:min-h-[820px] bg-background">
         {/* TOP HALF — animated city + bike */}
-        <div className="relative h-[58%] overflow-hidden">
+        <div className="relative h-[44vh] min-h-[300px] md:h-[440px] overflow-hidden flex-shrink-0">
           {/* Per-slide animated city as parallax background */}
           <MovingCity key={`city-${idx}`} tone={slide.tone} />
 
@@ -131,7 +131,7 @@ const Onboarding = () => {
         </div>
 
         {/* BOTTOM — content */}
-        <div className="relative -mt-6 flex-1 flex flex-col px-7 pt-2 pb-8">
+        <div className="relative -mt-6 flex-1 flex flex-col px-7 pt-2 pb-6">
           {/* Title */}
           <h1
             key={`t-${idx}`}
