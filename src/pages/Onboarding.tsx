@@ -1,55 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Wallet, Package, Bike, Sparkles } from "lucide-react";
-import bikeFront from "@/assets/bhar-bike-front.png";
-import bikeAngle from "@/assets/bhar-bike-angle.png";
-import bikeSide from "@/assets/bhar-bike-side.png";
+import { ArrowRight } from "lucide-react";
+import bikeSide from "@/assets/bhar-delivery-side.png";
+import bikeFront from "@/assets/bhar-delivery-front.png";
+import bikeAngle from "@/assets/bhar-delivery-angle.png";
 import { PhoneShell } from "@/components/PhoneShell";
-import { MovingCity } from "@/components/MovingCity";
+import { FloatingScene } from "@/components/FloatingScene";
+import { BharLogo } from "@/components/BharLogo";
 
 const slides = [
   {
-    icon: Wallet,
-    title: "Earn ₹40,000",
-    titleAccent: "every month",
-    subtitle: "Rider Income",
-    desc: "Zero fuel cost. Daily payouts. Weekly bonuses. Join thousands of BHAR riders building real income on electric.",
-    image: bikeAngle,
-    tone: "dawn" as const,
-    stats: [
-      { k: "₹138", v: "avg/order" },
-      { k: "4.9★", v: "rider rating" },
-      { k: "0₹", v: "fuel cost" },
-    ],
-  },
-  {
-    icon: Package,
-    title: "Deliver smarter,",
-    titleAccent: "not harder",
-    subtitle: "Delivery Module",
-    desc: "Smart order routing, built-in navigation, scan-to-deliver, live earnings — every tool a pro rider needs in one app.",
-    image: bikeFront,
-    tone: "noon" as const,
-    stats: [
-      { k: "12k+", v: "active riders" },
-      { k: "8 min", v: "avg delivery" },
-      { k: "24/7", v: "support" },
-    ],
-  },
-  {
-    icon: Bike,
-    title: "Your bike,",
-    titleAccent: "fully managed",
-    subtitle: "Bike Management",
-    desc: "Subscription plans, live battery health, GPS tracker, geofence alerts and one-tap service bookings — all yours.",
+    variant: "business" as const,
     image: bikeSide,
-    tone: "dusk" as const,
-    stats: [
-      { k: "80 km", v: "range" },
-      { k: "2 min", v: "battery swap" },
-      { k: "95%", v: "uptime" },
-    ],
+    title: "Manage Your Business",
+    titleAccent: "on the Go",
+    desc: "Real-time tracking, order management, and route optimization. All from your pocket.",
+  },
+  {
+    variant: "delivery" as const,
+    image: bikeFront,
+    title: "Smart Delivery",
+    titleAccent: "Starts Here",
+    desc: "Fast, eco-friendly BharBike — built for India's busiest streets.",
+  },
+  {
+    variant: "routing" as const,
+    image: bikeAngle,
+    title: "Smart Routing",
+    titleAccent: "Beat the traffic",
+    desc: "Maximize efficiency with real-time, AI-powered navigation that finds the fastest path.",
   },
 ];
 
@@ -57,157 +37,94 @@ const Onboarding = () => {
   const [idx, setIdx] = useState(0);
   const navigate = useNavigate();
   const slide = slides[idx];
-  const Icon = slide.icon;
+  const isLast = idx === slides.length - 1;
 
   const finish = () => {
     localStorage.setItem("bhar_onboarded", "1");
     navigate("/auth", { replace: true });
   };
-  const next = () => (idx === slides.length - 1 ? finish() : setIdx(idx + 1));
+  const next = () => (isLast ? finish() : setIdx(idx + 1));
   const goto = (i: number) => setIdx(i);
 
   return (
     <PhoneShell>
-      <div className="relative flex flex-col min-h-screen md:min-h-[820px] bg-background">
-        {/* TOP HALF — animated city + bike */}
-        <div className="relative h-[44vh] min-h-[300px] md:h-[440px] overflow-hidden flex-shrink-0">
-          {/* Per-slide animated city as parallax background */}
-          <MovingCity key={`city-${idx}`} tone={slide.tone} />
-
-          {/* Soft vignette to ground the bike against the city */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_85%,hsl(0_0%_0%/0.55),transparent_60%)] pointer-events-none" />
-
-          {/* Top status bar */}
-          <div className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-6 pt-5">
-            <div className="flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md px-3 py-1.5 border border-white/15">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/90">
-                BHA<span className="text-primary">र</span> · {String(idx + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
-              </span>
-            </div>
-            <button
-              onClick={finish}
-              className="text-xs font-semibold text-white/70 hover:text-white transition"
-            >
-              Skip
-            </button>
-          </div>
-
-          {/* Floating subtitle chip with sparkle */}
-          <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20 animate-fade-in" key={`chip-${idx}`}>
-            <div className="flex items-center gap-2 rounded-full bg-gradient-primary px-3.5 py-1.5 shadow-glow">
-              <Icon className="h-3.5 w-3.5 text-primary-foreground" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-foreground">
-                {slide.subtitle}
-              </span>
-              <Sparkles className="h-3 w-3 text-primary-foreground/80" />
-            </div>
-          </div>
-
-          {/* The bike — sits on the road, gently bobs */}
-          <div className="absolute inset-x-0 bottom-0 z-10 flex justify-center">
-            <div className="relative w-full max-w-[420px]">
-              {/* Ground glow under wheels */}
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 h-6 w-[78%] rounded-[100%] bg-primary/40 blur-2xl animate-pulse" />
-              {/* The bike image */}
-              <img
-                key={`bike-${idx}`}
-                src={slide.image}
-                alt={slide.subtitle}
-                className="relative z-10 mx-auto block w-[88%] max-h-[280px] object-contain bike-bob drop-shadow-[0_25px_25px_rgba(0,0,0,0.55)]"
-              />
-              {/* Speed streaks behind bike */}
-              <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3">
-                <div className="absolute top-[55%] left-2 h-0.5 w-16 bg-gradient-to-r from-transparent to-primary/80 streak-1" />
-                <div className="absolute top-[65%] left-6 h-0.5 w-24 bg-gradient-to-r from-transparent to-primary-glow/80 streak-2" />
-                <div className="absolute top-[72%] left-3 h-0.5 w-12 bg-gradient-to-r from-transparent to-primary/60 streak-3" />
-                <div className="absolute top-[80%] left-8 h-0.5 w-20 bg-gradient-to-r from-transparent to-primary-glow/70 streak-1" />
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom curved fade into content */}
-          <div className="absolute -bottom-px left-0 right-0 h-20 bg-gradient-to-t from-background via-background/90 to-transparent" />
+      <div className="relative flex flex-col min-h-screen md:min-h-[820px] bg-background overflow-hidden">
+        {/* Logo + Skip */}
+        <div className="relative z-30 flex items-center justify-between px-6 pt-6">
+          <BharLogo size={40} withWord />
+          <button
+            onClick={finish}
+            className="text-sm font-semibold text-muted-foreground hover:text-foreground transition"
+          >
+            Skip
+          </button>
         </div>
 
-        {/* BOTTOM — content */}
-        <div className="relative -mt-6 flex-1 flex flex-col px-7 pt-2 pb-6">
-          {/* Title */}
+        {/* HERO — bike with floating animated scene */}
+        <div className="relative flex-1 min-h-[340px] flex items-center justify-center">
+          <FloatingScene key={`scene-${idx}`} variant={slide.variant} />
+
+          <div className="relative z-10 w-full max-w-[420px] px-6">
+            <img
+              key={`bike-${idx}`}
+              src={slide.image}
+              alt={slide.title}
+              className="mx-auto block w-full max-h-[300px] object-contain bike-float drop-shadow-[0_30px_30px_rgba(0,0,0,0.18)] animate-fade-in"
+            />
+          </div>
+        </div>
+
+        {/* CONTENT */}
+        <div className="relative z-20 px-7 pb-7 pt-2">
           <h1
             key={`t-${idx}`}
-            className="font-display text-[34px] leading-[1.05] font-bold text-foreground animate-fade-in tracking-tight"
+            className="font-display text-[28px] md:text-[32px] leading-[1.1] font-bold text-foreground text-center animate-fade-in tracking-tight"
           >
             {slide.title}
             <br />
-            <span className="text-gradient">{slide.titleAccent}</span>
+            <span className="text-primary">{slide.titleAccent}</span>
           </h1>
 
           <p
             key={`d-${idx}`}
-            className="mt-4 text-[15px] leading-relaxed text-muted-foreground animate-fade-in"
+            className="mt-3 text-center text-[14px] leading-relaxed text-muted-foreground animate-fade-in max-w-[340px] mx-auto"
           >
             {slide.desc}
           </p>
 
-          {/* Stat strip */}
-          <div
-            key={`s-${idx}`}
-            className="mt-5 grid grid-cols-3 gap-2 rounded-2xl bg-secondary/[0.04] border border-border p-3 animate-fade-in"
-          >
-            {slide.stats.map((s, i) => (
-              <div
-                key={s.k}
-                className={`text-center ${i !== 0 ? "border-l border-border" : ""}`}
-              >
-                <p className="font-display text-base font-bold text-foreground">{s.k}</p>
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
-                  {s.v}
-                </p>
-              </div>
+          {/* Dots */}
+          <div className="mt-6 flex justify-center gap-2">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goto(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`h-2 rounded-full transition-all duration-500 ${
+                  i === idx ? "w-8 bg-primary" : "w-2 bg-border hover:bg-muted-foreground/40"
+                }`}
+              />
             ))}
           </div>
 
-          {/* Footer: dots + CTA */}
-          <div className="mt-auto flex items-center justify-between pt-7">
-            <div className="flex gap-2">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goto(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                  className={`h-2 rounded-full transition-all duration-500 ${
-                    i === idx ? "w-9 bg-gradient-primary shadow-glow" : "w-2 bg-border hover:bg-muted-foreground/40"
-                  }`}
-                />
-              ))}
-            </div>
-            <Button
-              size="lg"
-              onClick={next}
-              className="group rounded-full h-14 px-7 bg-gradient-primary text-primary-foreground shadow-glow hover:opacity-95 hover:scale-[1.02] transition"
-            >
-              {idx === slides.length - 1 ? "Get Started" : "Next"}
-              <ArrowRight className="ml-1 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </div>
+          {/* CTA */}
+          <Button
+            size="lg"
+            onClick={next}
+            className="group mt-6 w-full rounded-full h-14 bg-primary text-primary-foreground font-bold text-base tracking-wide shadow-glow hover:opacity-95 hover:scale-[1.01] transition"
+          >
+            {isLast ? "GET STARTED" : "NEXT"}
+            <ArrowRight className="ml-1 h-5 w-5 transition-transform group-hover:translate-x-1" />
+          </Button>
         </div>
 
-        {/* Local animations */}
+        {/* bike float */}
         <style>{`
-          @keyframes bike-bob {
-            0%, 100% { transform: translateY(0) rotate(-0.4deg); }
-            50%      { transform: translateY(-6px) rotate(0.4deg); }
+          @keyframes bike-float {
+            0%, 100% { transform: translateY(0) rotate(-0.3deg); }
+            50%      { transform: translateY(-8px) rotate(0.3deg); }
           }
-          .bike-bob { animation: bike-bob 1.6s ease-in-out infinite; }
-
-          @keyframes streak-fade {
-            0%   { transform: translateX(-30px); opacity: 0; }
-            40%  { opacity: 1; }
-            100% { transform: translateX(60px); opacity: 0; }
-          }
-          .streak-1 { animation: streak-fade 1.1s linear infinite; }
-          .streak-2 { animation: streak-fade 0.9s linear infinite 0.2s; }
-          .streak-3 { animation: streak-fade 1.3s linear infinite 0.5s; }
+          .bike-float { animation: bike-float 3.4s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) { .bike-float { animation: none; } }
         `}</style>
       </div>
     </PhoneShell>
