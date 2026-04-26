@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Wallet, Package, Bike, Sparkles } from "lucide-react";
-import bikeFront from "@/assets/bhar-bike-front.jpeg";
-import bikeAngle from "@/assets/bhar-bike-angle.jpeg";
-import bikeSide from "@/assets/bhar-bike-side.jpeg";
+import bikeFront from "@/assets/bhar-bike-front.png";
+import bikeAngle from "@/assets/bhar-bike-angle.png";
+import bikeSide from "@/assets/bhar-bike-side.png";
 import { PhoneShell } from "@/components/PhoneShell";
 import { MovingCity } from "@/components/MovingCity";
 
