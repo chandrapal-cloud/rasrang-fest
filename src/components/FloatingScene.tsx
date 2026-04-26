@@ -15,7 +15,13 @@ export const FloatingScene = ({ variant }: Props) => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
       {/* Soft warm gradient wash */}
-      <div className="absolute inset-0 bg-gradient-to-b from-orange-50 via-background to-background" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, hsl(var(--primary) / 0.08), hsl(var(--background)) 60%, hsl(var(--background)))",
+        }}
+      />
 
       {/* Subtle radial glow behind bike */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[340px] w-[340px] rounded-full bg-primary/15 blur-3xl" />
@@ -173,10 +179,17 @@ const RoutingElements = () => (
 /* ───────────────── small helpers ───────────────── */
 const PackageBox = ({ size = 40 }: { size?: number }) => (
   <div
-    className="rounded-md border border-amber-700/40 bg-gradient-to-br from-amber-200 to-amber-400 shadow-md flex items-center justify-center"
-    style={{ width: size, height: size }}
+    className="rounded-md shadow-md flex items-center justify-center"
+    style={{
+      width: size,
+      height: size,
+      background: "linear-gradient(135deg, hsl(38 70% 78%), hsl(32 75% 60%))",
+      border: "1px solid hsl(28 60% 40% / 0.5)",
+    }}
   >
-    <Package className="text-amber-900/80" style={{ width: size * 0.45, height: size * 0.45 }} />
+    <Package
+      style={{ width: size * 0.45, height: size * 0.45, color: "hsl(28 60% 25%)" }}
+    />
   </div>
 );
 
