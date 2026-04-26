@@ -131,7 +131,7 @@ const Onboarding = () => {
         </div>
 
         {/* BOTTOM — content */}
-        <div className="relative -mt-6 flex-1 flex flex-col px-7 pt-2 pb-8">
+        <div className="relative -mt-6 flex-1 flex flex-col px-7 pt-2 pb-6">
           {/* Title */}
           <h1
             key={`t-${idx}`}
