@@ -1,4 +1,5 @@
 import { MapPin, Package, Share2, Gauge, Leaf, Zap } from "lucide-react";
+import { Draggable } from "./Draggable";
 
 type Variant = "business" | "delivery" | "routing";
 
