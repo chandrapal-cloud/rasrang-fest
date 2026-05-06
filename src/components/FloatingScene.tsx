@@ -170,15 +170,17 @@ const Pin = ({
   delay?: string;
   small?: boolean;
 }) => (
-  <div className={`absolute pin-bounce ${className}`} style={{ animationDelay: delay }}>
-    <div className="relative">
-      <MapPin
-        className={`text-primary drop-shadow-md ${small ? "h-5 w-5" : "h-7 w-7"}`}
-        fill="hsl(var(--primary) / 0.25)"
-        strokeWidth={2.5}
-      />
-      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-3 rounded-full bg-primary/30 blur-sm" />
-    </div>
+  <div className={`absolute ${className}`}>
+    <Draggable>
+      <div className="pin-bounce relative" style={{ animationDelay: delay }}>
+        <MapPin
+          className={`text-primary drop-shadow-md ${small ? "h-5 w-5" : "h-7 w-7"}`}
+          fill="hsl(var(--primary) / 0.25)"
+          strokeWidth={2.5}
+        />
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-3 rounded-full bg-primary/30 blur-sm" />
+      </div>
+    </Draggable>
   </div>
 );
 
