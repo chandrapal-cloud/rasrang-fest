@@ -26,13 +26,13 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/app`,
+            emailRedirectTo: `${window.location.origin}/role`,
             data: { full_name: name },
           },
         });
         if (error) throw error;
-        toast.success("Welcome to BHAR! Check your inbox to confirm.");
-        navigate("/app", { replace: true });
+        toast.success("Welcome to BHAR!");
+        navigate("/role", { replace: true });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
