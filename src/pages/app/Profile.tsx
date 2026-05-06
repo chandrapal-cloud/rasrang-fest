@@ -69,6 +69,19 @@ const Profile = () => {
         </div>
       </div>
 
+      {isAdmin && (
+        <div className="px-5 mt-5">
+          <button onClick={() => navigate("/admin")} className="w-full rounded-2xl bg-gradient-primary text-primary-foreground p-4 shadow-glow flex items-center gap-3 text-left">
+            <LayoutDashboard className="h-5 w-5" />
+            <div className="flex-1">
+              <p className="font-bold text-sm">Admin Console</p>
+              <p className="text-[11px] opacity-80">Manage all users, bikes &amp; deliveries</p>
+            </div>
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
       {/* Menu */}
       <div className="px-5 mt-5">
         <Card className="divide-y divide-border">
