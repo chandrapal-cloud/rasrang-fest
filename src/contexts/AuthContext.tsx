@@ -17,6 +17,8 @@ interface AuthCtx {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
+  roles: Role[];
+  isAdmin: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -29,11 +31,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async (uid: string) => {
-    const { data } = await supabase.from("profiles").select("*").eq("id", uid).maybeSingle();
-    if (data) setProfile(data as Profile);
+    const [{ data: prof }, { data: roleRows }] = await Promise.all([
+      supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
+      supabase.from("user_roles").select("role").eq("user_id", uid),
+    ]);
+    if (prof) setProfile(prof as Profile);
+    setRoles((roleRows ?? []).map((r: any) => r.role as Role));
   };
 
   useEffect(() => {
@@ -44,6 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setTimeout(() => fetchProfile(s.user.id), 0);
       } else {
         setProfile(null);
+        setRoles([]);
       }
     });
     supabase.auth.getSession().then(({ data: { session: s } }) => {
@@ -58,6 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     setProfile(null);
+    setRoles([]);
   };
 
   const refreshProfile = async () => {
@@ -66,13 +75,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const setActiveRole = async (role: Role) => {
     if (!user) return;
-    await supabase.from("user_roles").insert({ user_id: user.id, role }).select();
-    await supabase.from("profiles").update({ active_role: role }).eq("id", user.id);
+    if (!roles.includes(role)) {
+      await supabase.from("user_roles").insert({ user_id: user.id, role });
+    }
+    await supabase.from("profiles").update({ active_role: role, onboarding_complete: true }).eq("id", user.id);
     await fetchProfile(user.id);
   };
 
   return (
-    <Ctx.Provider value={{ user, session, profile, loading, signOut, refreshProfile, setActiveRole }}>
+    <Ctx.Provider value={{ user, session, profile, roles, isAdmin: roles.includes("admin"), loading, signOut, refreshProfile, setActiveRole }}>
       {children}
     </Ctx.Provider>
   );

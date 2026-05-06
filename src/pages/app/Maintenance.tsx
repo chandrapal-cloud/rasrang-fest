@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Wrench, Battery, Disc, Lightbulb, Wind, Shield } from "lucide-react";
+import { Wrench, Battery, Disc, Lightbulb, Wind, Shield, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const services = [
   { icon: Wrench, label: "General Service", price: "Free", desc: "Full diagnostics & tune-up" },
@@ -12,47 +13,60 @@ const services = [
   { icon: Shield, label: "Insurance Renewal", price: "₹1,499", desc: "Annual cover" },
 ];
 
-const history = [
-  { date: "20 Apr 2026", type: "Tyre Replacement", cost: 1200, mechanic: "Rakesh, Saket Hub" },
-  { date: "05 Apr 2026", type: "General Service", cost: 0, mechanic: "Suresh, Saket Hub" },
-  { date: "12 Mar 2026", type: "Battery Swap", cost: 0, mechanic: "Auto Swap" },
-];
+const Maintenance = () => {
+  const [history, setHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from("maintenance_records").select("*").order("performed_at", { ascending: false });
+      setHistory(data ?? []);
+      setLoading(false);
+    })();
+  }, []);
 
-const Maintenance = () => (
-  <div className="pb-6">
-    <PageHeader title="Service Center" subtitle="Keep your BHAR EV in top shape" />
+  return (
+    <div className="pb-6">
+      <PageHeader title="Service Center" subtitle="Keep your BHAR EV in top shape" />
 
-    <div className="px-5 mt-4">
-      <h3 className="font-display text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">Book a service</h3>
-      <div className="grid grid-cols-2 gap-3">
-        {services.map(({ icon: Icon, label, price, desc }) => (
-          <Card key={label} className="p-4 hover:shadow-card transition cursor-pointer">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground mb-2.5">
-              <Icon className="h-5 w-5" />
-            </div>
-            <p className="font-semibold text-sm text-foreground">{label}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{desc}</p>
-            <p className="text-xs font-bold text-primary mt-2">{price}</p>
+      <div className="px-5 mt-4">
+        <h3 className="font-display text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">Book a service</h3>
+        <div className="grid grid-cols-2 gap-3">
+          {services.map(({ icon: Icon, label, price, desc }) => (
+            <Card key={label} className="p-4 hover:shadow-card transition cursor-pointer">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground mb-2.5">
+                <Icon className="h-5 w-5" />
+              </div>
+              <p className="font-semibold text-sm text-foreground">{label}</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5">{desc}</p>
+              <p className="text-xs font-bold text-primary mt-2">{price}</p>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <div className="px-5 mt-7">
+        <h3 className="font-display text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">History</h3>
+        {loading ? (
+          <div className="flex justify-center py-6"><Loader2 className="h-5 w-5 animate-spin text-primary" /></div>
+        ) : history.length === 0 ? (
+          <Card className="p-6 text-center text-sm text-muted-foreground">No service history yet.</Card>
+        ) : (
+          <Card className="divide-y divide-border">
+            {history.map((h) => (
+              <div key={h.id} className="flex items-center justify-between p-4">
+                <div>
+                  <p className="font-semibold text-sm">{h.service_type}</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    {new Date(h.performed_at).toLocaleDateString()} {h.mechanic && `· ${h.mechanic}`}
+                  </p>
+                </div>
+                <span className="font-display font-bold text-sm">{Number(h.cost) === 0 ? "Free" : `₹${h.cost}`}</span>
+              </div>
+            ))}
           </Card>
-        ))}
+        )}
       </div>
     </div>
-
-    <div className="px-5 mt-7">
-      <h3 className="font-display text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">History</h3>
-      <Card className="divide-y divide-border">
-        {history.map((h, i) => (
-          <div key={i} className="flex items-center justify-between p-4">
-            <div>
-              <p className="font-semibold text-sm">{h.type}</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">{h.date} · {h.mechanic}</p>
-            </div>
-            <span className="font-display font-bold text-sm">{h.cost === 0 ? "Free" : `₹${h.cost}`}</span>
-          </div>
-        ))}
-      </Card>
-    </div>
-  </div>
-);
-
+  );
+};
 export default Maintenance;

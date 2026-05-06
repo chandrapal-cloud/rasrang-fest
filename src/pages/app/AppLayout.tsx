@@ -5,7 +5,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { Loader2 } from "lucide-react";
 
 const AppLayout = () => {
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
 
   if (loading) {
     return (
@@ -16,6 +16,7 @@ const AppLayout = () => {
   }
 
   if (!user) return <Navigate to="/auth" replace />;
+  if (profile && !profile.onboarding_complete) return <Navigate to="/role" replace />;
 
   return (
     <PhoneShell>

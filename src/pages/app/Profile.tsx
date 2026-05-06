@@ -3,11 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Bike, Truck, ChevronRight, FileText, HelpCircle, Shield, Bell, Wallet } from "lucide-react";
+import { LogOut, Bike, Truck, ChevronRight, FileText, HelpCircle, Shield, Bell, Wallet, LayoutDashboard } from "lucide-react";
 import { toast } from "sonner";
 
 const Profile = () => {
-  const { profile, signOut, setActiveRole } = useAuth();
+  const { profile, signOut, setActiveRole, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -68,6 +68,19 @@ const Profile = () => {
           </button>
         </div>
       </div>
+
+      {isAdmin && (
+        <div className="px-5 mt-5">
+          <button onClick={() => navigate("/admin")} className="w-full rounded-2xl bg-gradient-primary text-primary-foreground p-4 shadow-glow flex items-center gap-3 text-left">
+            <LayoutDashboard className="h-5 w-5" />
+            <div className="flex-1">
+              <p className="font-bold text-sm">Admin Console</p>
+              <p className="text-[11px] opacity-80">Manage all users, bikes &amp; deliveries</p>
+            </div>
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
 
       {/* Menu */}
       <div className="px-5 mt-5">
