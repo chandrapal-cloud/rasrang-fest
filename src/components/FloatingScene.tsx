@@ -14,7 +14,7 @@ interface Props {
  */
 export const FloatingScene = ({ variant }: Props) => {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Soft warm gradient wash */}
       <div
         className="absolute inset-0"
