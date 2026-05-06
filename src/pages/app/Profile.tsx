@@ -3,11 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Bike, Truck, ChevronRight, FileText, HelpCircle, Shield, Bell, Wallet } from "lucide-react";
+import { LogOut, Bike, Truck, ChevronRight, FileText, HelpCircle, Shield, Bell, Wallet, LayoutDashboard } from "lucide-react";
 import { toast } from "sonner";
 
 const Profile = () => {
-  const { profile, signOut, setActiveRole } = useAuth();
+  const { profile, signOut, setActiveRole, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
