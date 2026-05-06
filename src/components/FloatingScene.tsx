@@ -74,38 +74,27 @@ export const FloatingScene = ({ variant }: Props) => {
 /* ───────────────── Variant 1: Business — packages + connection nodes ───────────────── */
 const BusinessElements = () => (
   <>
-    {/* Floating packages */}
-    <div className="absolute top-[18%] left-[10%] float-a">
-      <PackageBox size={44} />
-    </div>
-    <div className="absolute top-[12%] right-[18%] float-b">
-      <PackageBox size={36} />
-    </div>
-    <div className="absolute top-[55%] left-[6%] float-c">
-      <PackageBox size={32} />
-    </div>
-    <div className="absolute top-[50%] right-[8%] float-a">
-      <PackageBox size={38} />
+    <div className="absolute top-[18%] left-[10%]"><Draggable><div className="float-a"><PackageBox size={44} /></div></Draggable></div>
+    <div className="absolute top-[12%] right-[18%]"><Draggable><div className="float-b"><PackageBox size={36} /></div></Draggable></div>
+    <div className="absolute top-[55%] left-[6%]"><Draggable><div className="float-c"><PackageBox size={32} /></div></Draggable></div>
+    <div className="absolute top-[50%] right-[8%]"><Draggable><div className="float-a"><PackageBox size={38} /></div></Draggable></div>
+
+    <div className="absolute top-[20%] right-[6%]">
+      <Draggable>
+        <div className="float-c relative h-14 w-14">
+          <Share2 className="absolute inset-0 m-auto h-8 w-8 text-primary/70" />
+          <div className="absolute inset-0 rounded-full border border-primary/40 pulse-ring" />
+        </div>
+      </Draggable>
     </div>
 
-    {/* Network nodes */}
-    <div className="absolute top-[20%] right-[6%] float-c">
-      <div className="relative h-14 w-14">
-        <Share2 className="absolute inset-0 m-auto h-8 w-8 text-primary/70" />
-        <div className="absolute inset-0 rounded-full border border-primary/40 pulse-ring" />
-      </div>
-    </div>
-
-    {/* Wind streaks */}
     <Wind />
   </>
 );
 
-/* ───────────────── Variant 2: Delivery — pins + connection web ───────────────── */
 const DeliveryElements = () => (
   <>
-    {/* Connecting web — SVG */}
-    <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 500" preserveAspectRatio="none">
+    <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden>
       <g stroke="hsl(var(--primary))" strokeWidth="1.2" fill="none" opacity="0.55">
         <path d="M40,120 Q200,180 360,110" className="dash-flow" />
         <path d="M30,360 Q200,260 380,360" className="dash-flow" style={{ animationDelay: "0.4s" }} />
@@ -114,7 +103,6 @@ const DeliveryElements = () => (
       </g>
     </svg>
 
-    {/* Location pins at the nodes */}
     <Pin className="top-[18%] left-[8%]" delay="0s" />
     <Pin className="top-[16%] right-[12%]" delay="0.3s" />
     <Pin className="top-[68%] left-[10%]" delay="0.6s" />
@@ -122,57 +110,36 @@ const DeliveryElements = () => (
     <Pin className="top-[42%] left-[4%]" delay="1.2s" small />
     <Pin className="top-[44%] right-[4%]" delay="0.5s" small />
 
-    {/* Speed badges */}
-    <div className="absolute top-[28%] left-[6%] float-a">
-      <Badge icon={<Zap className="h-3 w-3" />} label="Fast" />
-    </div>
-    <div className="absolute top-[28%] right-[6%] float-b">
-      <Badge icon={<Leaf className="h-3 w-3" />} label="Eco" />
-    </div>
+    <div className="absolute top-[28%] left-[6%]"><Draggable><div className="float-a"><Badge icon={<Zap className="h-3 w-3" />} label="Fast" /></div></Draggable></div>
+    <div className="absolute top-[28%] right-[6%]"><Draggable><div className="float-b"><Badge icon={<Leaf className="h-3 w-3" />} label="Eco" /></div></Draggable></div>
   </>
 );
 
-/* ───────────────── Variant 3: Routing — route map with packages ───────────────── */
 const RoutingElements = () => (
   <>
-    {/* Route map underneath */}
-    <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 500" preserveAspectRatio="none">
+    <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden>
       <g stroke="hsl(var(--primary))" strokeWidth="2" fill="none" opacity="0.4">
-        <polyline
-          points="50,420 100,320 180,360 240,260 320,300 360,200"
-          className="dash-flow"
-        />
-        <polyline
-          points="40,440 90,440 90,380 200,380 200,300 340,300"
-          className="dash-flow"
-          style={{ animationDelay: "0.5s" }}
-        />
+        <polyline points="50,420 100,320 180,360 240,260 320,300 360,200" className="dash-flow" />
+        <polyline points="40,440 90,440 90,380 200,380 200,300 340,300" className="dash-flow" style={{ animationDelay: "0.5s" }} />
       </g>
     </svg>
 
-    {/* Pins along route */}
     <Pin className="top-[80%] left-[10%]" delay="0s" />
     <Pin className="top-[55%] left-[42%]" delay="0.3s" small />
     <Pin className="top-[35%] right-[12%]" delay="0.6s" />
     <Pin className="top-[68%] right-[20%]" delay="0.9s" small />
 
-    {/* Floating packages */}
-    <div className="absolute top-[14%] left-[12%] float-a">
-      <PackageBox size={40} />
-    </div>
-    <div className="absolute top-[10%] right-[16%] float-b">
-      <PackageBox size={36} />
-    </div>
-    <div className="absolute top-[58%] right-[6%] float-c">
-      <PackageBox size={32} />
-    </div>
+    <div className="absolute top-[14%] left-[12%]"><Draggable><div className="float-a"><PackageBox size={40} /></div></Draggable></div>
+    <div className="absolute top-[10%] right-[16%]"><Draggable><div className="float-b"><PackageBox size={36} /></div></Draggable></div>
+    <div className="absolute top-[58%] right-[6%]"><Draggable><div className="float-c"><PackageBox size={32} /></div></Draggable></div>
 
-    {/* Compass / target */}
     <div className="absolute top-[20%] right-[8%]">
-      <div className="relative h-12 w-12 rounded-full border-2 border-primary/40 spin-slow flex items-center justify-center">
-        <div className="h-1 w-1 rounded-full bg-primary" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 h-2 w-0.5 bg-primary" />
-      </div>
+      <Draggable>
+        <div className="relative h-12 w-12 rounded-full border-2 border-primary/40 spin-slow flex items-center justify-center bg-background/40">
+          <div className="h-1 w-1 rounded-full bg-primary" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 h-2 w-0.5 bg-primary" />
+        </div>
+      </Draggable>
     </div>
   </>
 );
