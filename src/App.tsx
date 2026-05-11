@@ -26,6 +26,17 @@ import AdminDeliveries from "./pages/admin/AdminDeliveries";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import NotFound from "./pages/NotFound.tsx";
 
+// Rang Manch — Festival of Art, Film & Literature (added below existing app routes)
+import FestivalLayout from "./pages/festival/FestivalLayout";
+import FestivalHome from "./pages/festival/Home";
+import FestivalEvents from "./pages/festival/Events";
+import FestivalBlogs from "./pages/festival/Blogs";
+import FestivalAbout from "./pages/festival/About";
+import FestivalBook from "./pages/festival/Book";
+import FestivalMembership from "./pages/festival/Membership";
+import FestivalTeam from "./pages/festival/Team";
+import FestivalMagazine from "./pages/festival/Magazine";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -57,6 +68,17 @@ const App = () => (
               <Route path="bookings" element={<AdminBookings />} />
               <Route path="deliveries" element={<AdminDeliveries />} />
               <Route path="subscriptions" element={<AdminSubscriptions />} />
+            </Route>
+            {/* Festival website (Rang Manch) — independent section */}
+            <Route path="/festival" element={<FestivalLayout />}>
+              <Route index element={<FestivalHome />} />
+              <Route path="events" element={<FestivalEvents />} />
+              <Route path="blogs" element={<FestivalBlogs />} />
+              <Route path="about" element={<FestivalAbout />} />
+              <Route path="book" element={<FestivalBook />} />
+              <Route path="membership" element={<FestivalMembership />} />
+              <Route path="team" element={<FestivalTeam />} />
+              <Route path="magazine" element={<FestivalMagazine />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
